@@ -14,7 +14,7 @@ import time
 #     client = gspread.authorize(creds)
 #     return client.open('dashboard export').sheet1  # Replace with your own sheet name
 
-df=pd.read_excel('C:\Users\SUHAS\Downloads\camino dashboard\dashboard export.xlsx')
+df=pd.read_excel('dashboard export.xlsx')
 
 st.set_page_config(
     page_title = 'CAMINO LCSNA Real-Time Dashboard',
