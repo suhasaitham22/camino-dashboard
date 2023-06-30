@@ -4,18 +4,31 @@ import pandas as pd
 import plotly.express as px
 import time
 
+
 def load_data(sheets_url):
-    csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
-    return pd.read_csv(csv_url)
+    try:
+        excel_url = sheets_url.replace("/edit#gid=", "/export?format=xlsx&gid=")
+        return pd.read_excel(excel_url)
+    except pd.errors.ParserError as e:
+        st.error("Error: Failed to load data from the Excel file.")
+        st.error(str(e))
+        return None
 
-df = load_data(st.secrets["public_gsheets_url"])
+# Check if the 'public_gsheets_url' secret is available
+if "public_gsheets_url" not in st.secrets:
+    st.error("Error: 'public_gsheets_url' secret not found.")
+else:
+    df = load_data(st.secrets["public_gsheets_url"])
 
-st.set_page_config(
-    page_title='CAMINO LCSNA Real-Time Dashboard',
-    page_icon='*',
-    layout='wide'
-)
+    if df is not None:
+        st.set_page_config(
+            page_title='CAMINO LCSNA Real-Time Dashboard',
+            page_icon='*',
+            layout='wide'
+        )
 
+        st.title('Real-Time LCSNA Dashboard')
+        st.write(df)
 # Sidebar navigation
 page = st.sidebar.selectbox('Page', ('Home', 'Gender Differences', 'Residency Differences'))
 
