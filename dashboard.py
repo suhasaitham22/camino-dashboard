@@ -4,17 +4,15 @@ import pandas as pd
 import plotly.express as px
 from openpyxl import load_workbook
 import requests
+import io
 
 def load_data(sheets_url):
     try:
         excel_url = sheets_url.replace("/edit#gid=", "/export?format=xlsx&gid=")
         response = requests.get(excel_url)
-        content = response.content
-        workbook = load_workbook(filename=None, data=content)
-        sheet = workbook.active
-        data = sheet.values
-        headers = next(data)
-        return pd.DataFrame(data, columns=headers)
+        content = io.BytesIO(response.content)
+        df = pd.read_excel(content)
+        return df
     except (requests.exceptions.RequestException, pd.errors.ParserError) as e:
         st.error("Error: Failed to load data from the Excel file.")
         st.error(str(e))
