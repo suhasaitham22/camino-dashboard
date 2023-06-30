@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import time
+import xlrd
 
 def load_data(sheets_url):
     try:
