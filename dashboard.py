@@ -9,8 +9,8 @@ def load_data(sheets_url):
     try:
         excel_url = sheets_url.replace("/edit#gid=", "/export?format=xlsx&gid=")
         response = requests.get(excel_url)
-        content = io.BytesIO(response.content)
-        df = pd.read_excel(content)
+        content = response.content
+        df = pd.read_excel(io.BytesIO(content), engine='openpyxl')
         return df
     except (requests.exceptions.RequestException, pd.errors.ParserError) as e:
         st.error("Error: Failed to load data from the Excel file.")
