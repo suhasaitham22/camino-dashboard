@@ -2,4 +2,4 @@ streamlit == 1.21.0
 plotly == 5.14.1
 pandas == 1.0.5
 numpy == 1.23.5
-openpyxl
+openpyxl == 3.1.2
