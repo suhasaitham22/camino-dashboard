@@ -2,14 +2,19 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import time
-import xlrd
+from openpyxl import load_workbook
 
 def load_data(sheets_url):
     try:
         excel_url = sheets_url.replace("/edit#gid=", "/export?format=xlsx&gid=")
-        return pd.read_excel(excel_url)
-    except pd.errors.ParserError as e:
+        response = requests.get(excel_url)
+        content = response.content
+        workbook = load_workbook(filename=None, data=content)
+        sheet = workbook.active
+        data = sheet.values
+        headers = next(data)
+        return pd.DataFrame(data, columns=headers)
+    except (requests.exceptions.RequestException, pd.errors.ParserError) as e:
         st.error("Error: Failed to load data from the Excel file.")
         st.error(str(e))
         return None
