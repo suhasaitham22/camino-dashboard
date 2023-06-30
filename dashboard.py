@@ -4,7 +4,6 @@ import pandas as pd
 import plotly.express as px
 import time
 
-
 def load_data(sheets_url):
     try:
         excel_url = sheets_url.replace("/edit#gid=", "/export?format=xlsx&gid=")
@@ -18,7 +17,10 @@ def load_data(sheets_url):
 if "public_gsheets_url" not in st.secrets:
     st.error("Error: 'public_gsheets_url' secret not found.")
 else:
-    df = load_data(st.secrets["public_gsheets_url"])
+    # Get the URL from the secret
+    sheets_url = st.secrets["public_gsheets_url"]
+    
+    df = load_data(sheets_url)
 
     if df is not None:
         st.set_page_config(
@@ -29,6 +31,7 @@ else:
 
         st.title('Real-Time LCSNA Dashboard')
         st.write(df)
+        
 # Sidebar navigation
 page = st.sidebar.selectbox('Page', ('Home', 'Gender Differences', 'Residency Differences'))
 
