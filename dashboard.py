@@ -10,7 +10,7 @@ def load_data(sheets_url):
         excel_url = sheets_url.replace("/edit#gid=", "/export?format=xlsx&gid=")
         response = requests.get(excel_url)
         content = response.content
-        df = pd.read_excel(io.BytesIO(content), engine='openpyxl')
+        df = pd.read_excel(io.BytesIO(content), engine='xlrd')
         return df
     except (requests.exceptions.RequestException, pd.errors.ParserError) as e:
         st.error("Error: Failed to load data from the Excel file.")
