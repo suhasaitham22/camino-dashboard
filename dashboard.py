@@ -14,7 +14,11 @@ import time
 #     client = gspread.authorize(creds)
 #     return client.open('dashboard export').sheet1  # Replace with your own sheet name
 
-df=pd.read_excel('dashboard export.xlsx')
+def load_data(sheets_url):
+    csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
+    return pd.read_csv(csv_url)
+
+df = load_data(st.secrets["public_gsheets_url"])
 
 st.set_page_config(
     page_title = 'CAMINO LCSNA Real-Time Dashboard',
