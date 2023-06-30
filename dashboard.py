@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 from openpyxl import load_workbook
+import requests
 
 def load_data(sheets_url):
     try:
